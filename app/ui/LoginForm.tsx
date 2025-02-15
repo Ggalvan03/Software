@@ -23,7 +23,7 @@ export default function LoginForm() {
     This function handles the submition details, validating the username and password
     and handleing rerouting of the website.
     */
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Prevent the default form submission behavior (which refreshes the page).
     
         // User Rhodey Password WARMACHINEROXX
