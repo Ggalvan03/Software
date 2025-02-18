@@ -8,14 +8,14 @@ the process is hardcoded to the username Rhodey and password WARMACHINEROXX.
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { useAuth } from '@/app/lib/context/AuthContext';
 
 export default function LoginForm() {
     // State variables are used to handel information on the page
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    const { login } = useAuth();
     // The useRouter function allows for the navegation between pages
     const router = useRouter();
 
@@ -29,6 +29,7 @@ export default function LoginForm() {
         // User Rhodey Password WARMACHINEROXX
         if (username === 'Rhodey' && password === 'WARMACHINEROXX') {
           setError(''); // Clear any previous error.
+          login(); // update auth state in context
           router.push('/home'); // Redirect to the dashboard page.
         } else {
           setError('Invalid username or password'); // Show an error message if credentials do not match.
