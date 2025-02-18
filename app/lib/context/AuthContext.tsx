@@ -1,44 +1,49 @@
-// context/AuthContext.tsx
+"use client";
 
-"use client"
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface AuthContextType {
   isLoggedIn: boolean;
+  isInitialized: boolean;
   login: () => void;
   logout: () => void;
 }
 
-// Create the context with an undefined default value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// The provider component that wraps your app and makes auth object available to any child component that calls useAuth.
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // Use state to hold the login status (false means not logged in)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
-  // Function to log the user in
+  useEffect(() => {
+    const storedLoggedIn = localStorage.getItem("loggedIn");
+    if (storedLoggedIn === "true") {
+      setIsLoggedIn(true);
+    }
+    setIsInitialized(true);
+  }, []);
+
   const login = () => {
     setIsLoggedIn(true);
+    localStorage.setItem("loggedIn", "true");
   };
 
-  // Function to log the user out
   const logout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem("loggedIn");
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isInitialized, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook that enables other components to easily access the auth context
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

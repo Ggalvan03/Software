@@ -6,14 +6,15 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/lib/context/AuthContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, isInitialized } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-      if (!isLoggedIn) {
-        router.push("/"); // Redirect to login if not authenticated
+      // Only perform the redirect check after initialization is complete
+      if (isInitialized && !isLoggedIn) {
+        router.push("/");
       }
-    }, [isLoggedIn, router]);
+    }, [isInitialized, isLoggedIn, router]);
 
     return (
       <div>
