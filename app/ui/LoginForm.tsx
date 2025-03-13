@@ -9,6 +9,7 @@ the process is hardcoded to the username Rhodey and password WARMACHINEROXX.
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/context/AuthContext';
+import Link from 'next/link';
 
 export default function LoginForm() {
     // State variables are used to handel information on the page
